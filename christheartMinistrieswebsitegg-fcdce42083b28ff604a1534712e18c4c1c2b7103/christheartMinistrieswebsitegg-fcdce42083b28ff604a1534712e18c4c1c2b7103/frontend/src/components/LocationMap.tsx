@@ -95,12 +95,8 @@ export default function LocationMap({ address, label, height = "250px", zoom = 1
       scrollWheelZoom={false}
     >
       <TileLayer
-        url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
-        attribution='&copy; Esri &mdash; Esri, DeLorme, NAVTEQ'
-      />
-      <TileLayer
-        url="https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}"
-        attribution=""
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       />
       <FlyToPoint lat={coords.lat} lng={coords.lng} zoom={zoom} />
       <Marker position={center}>
