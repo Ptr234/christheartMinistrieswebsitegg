@@ -3,13 +3,12 @@ import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
-const DefaultIcon = L.icon({
-  iconUrl: new URL("leaflet/dist/images/marker-icon.png", import.meta.url).href,
-  shadowUrl: new URL("leaflet/dist/images/marker-shadow.png", import.meta.url).href,
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowSize: [41, 41],
+const DefaultIcon = L.divIcon({
+  className: "map-pin",
+  html: '<div class="map-pin-inner"><span class="map-pin-cross">✟</span></div>',
+  iconSize: [30, 40],
+  iconAnchor: [15, 40],
+  popupAnchor: [0, -40],
 });
 (L as any).Marker.prototype.options.icon = DefaultIcon;
 
@@ -96,8 +95,12 @@ export default function LocationMap({ address, label, height = "250px", zoom = 1
       scrollWheelZoom={false}
     >
       <TileLayer
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        attribution='&copy; OpenStreetMap contributors'
+        url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+        attribution='&copy; Esri &mdash; Esri, DeLorme, NAVTEQ'
+      />
+      <TileLayer
+        url="https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}"
+        attribution=""
       />
       <FlyToPoint lat={coords.lat} lng={coords.lng} zoom={zoom} />
       <Marker position={center}>

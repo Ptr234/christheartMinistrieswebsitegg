@@ -1670,6 +1670,69 @@ select:focus-visible {
 .skeleton-title { height: 1.5rem; width: 60%; margin-bottom: 1rem; }
 .skeleton-image { width: 100%; aspect-ratio: 16/9; border-radius: var(--radius-lg); }
 
+/* Optimized Image wrapper */
+.opt-img-wrap {
+  position: relative; overflow: hidden; background: var(--gray-100);
+  border-radius: inherit;
+}
+.opt-img-skeleton {
+  position: absolute; inset: 0; z-index: 1; border-radius: inherit;
+}
+
+/* ===================== */
+/* CUSTOM MAP MARKERS    */
+/* ===================== */
+.map-pin {
+  background: none !important;
+  border: none !important;
+}
+.map-pin-inner {
+  width: 30px; height: 40px; position: relative;
+  display: flex; align-items: flex-start; justify-content: center;
+  filter: drop-shadow(0 3px 6px rgba(0,0,0,0.35));
+}
+.map-pin-inner::before {
+  content: '';
+  position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+  width: 28px; height: 28px;
+  background: linear-gradient(135deg, var(--purple-600) 0%, var(--purple-800) 100%);
+  border: 3px solid var(--gold-400);
+  border-radius: 50% 50% 50% 0;
+  transform-origin: center;
+  transform: translateX(-50%) rotate(-45deg);
+  box-shadow: 0 0 0 2px rgba(255,255,255,0.5);
+}
+.map-pin-inner::after {
+  content: '';
+  position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
+  width: 8px; height: 8px;
+  background: var(--purple-600); border-radius: 50%;
+  opacity: 0.3;
+}
+.map-pin-cross {
+  position: relative; z-index: 2;
+  color: var(--gold-400); font-size: 14px; font-weight: 700;
+  margin-top: 3px; line-height: 1;
+}
+/* Selected / Active marker */
+.map-pin-selected .map-pin-inner {
+  width: 36px; height: 48px;
+  animation: map-pin-bounce 0.6s ease;
+}
+.map-pin-selected .map-pin-inner::before {
+  width: 34px; height: 34px;
+  background: linear-gradient(135deg, var(--gold-500) 0%, var(--gold-600) 100%);
+  border-color: var(--purple-600);
+}
+.map-pin-selected .map-pin-cross {
+  color: var(--purple-900); font-size: 16px;
+}
+@keyframes map-pin-bounce {
+  0%, 100% { transform: translateY(0); }
+  40% { transform: translateY(-10px); }
+  60% { transform: translateY(-5px); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .particle { animation: none !important; }
   .typing-cursor { animation: none !important; }
@@ -1723,32 +1786,32 @@ select:focus-visible {
 .hero-branches {
   background: linear-gradient(135deg, #000000 0%, #1f0530 25%, #4d0b7a 55%, #30064d 80%, #0a0a0a 100%);
 }
-.hero-branches::before { background-image: url('https://images.unsplash.com/photo-1529070538774-1f4e532a2cfd?w=1920&q=80'); }
+.hero-branches::before { background-image: url('https://images.unsplash.com/photo-1529070538774-1f4e532a2cfd?w=1200&q=50&auto=format'); }
 
 .hero-events {
   background: linear-gradient(135deg, #0a0a0a 0%, #30064d 30%, #7a17bd 55%, #1f0530 80%, #000000 100%);
 }
-.hero-events::before { background-image: url('https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=1920&q=80'); }
+.hero-events::before { background-image: url('https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=1200&q=50&auto=format'); }
 
 .hero-about {
   background: linear-gradient(135deg, #000000 0%, #1f0530 20%, #63109a 50%, #30064d 75%, #0a0a0a 100%);
 }
-.hero-about::before { background-image: url('https://images.unsplash.com/photo-1438232992991-995b7058bbb3?w=1920&q=80'); }
+.hero-about::before { background-image: url('https://images.unsplash.com/photo-1438232992991-995b7058bbb3?w=1200&q=50&auto=format'); }
 
 .hero-sermons {
   background: linear-gradient(135deg, #000000 0%, #141414 20%, #30064d 50%, #4d0b7a 70%, #0a0a0a 100%);
 }
-.hero-sermons::before { background-image: url('https://images.unsplash.com/photo-1507838153414-b4b713384a76?w=1920&q=80'); }
+.hero-sermons::before { background-image: url('https://images.unsplash.com/photo-1507838153414-b4b713384a76?w=1200&q=50&auto=format'); }
 
 .hero-give {
   background: linear-gradient(135deg, #0a0a0a 0%, #30064d 20%, #b45309 50%, #d97706 65%, #1f0530 85%, #000000 100%);
 }
-.hero-give::before { background-image: url('https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?w=1920&q=80'); }
+.hero-give::before { background-image: url('https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?w=1200&q=50&auto=format'); }
 
 .hero-contact {
   background: linear-gradient(135deg, #000000 0%, #1f0530 30%, #4d0b7a 55%, #30064d 80%, #0a0a0a 100%);
 }
-.hero-contact::before { background-image: url('https://images.unsplash.com/photo-1423666639041-f56000c27a9a?w=1920&q=80'); }
+.hero-contact::before { background-image: url('https://images.unsplash.com/photo-1423666639041-f56000c27a9a?w=1200&q=50&auto=format'); }
 
 @media (max-width: 768px) {
   .page-hero-xl { min-height: 40vh; padding: 7rem 1.5rem 3.5rem; }

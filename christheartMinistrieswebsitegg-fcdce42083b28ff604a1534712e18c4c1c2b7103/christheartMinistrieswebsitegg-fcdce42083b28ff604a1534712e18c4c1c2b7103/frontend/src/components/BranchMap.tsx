@@ -4,23 +4,20 @@ import L from "leaflet";
 import type { Branch } from "../types";
 import "leaflet/dist/leaflet.css";
 
-const DefaultIcon = L.icon({
-  iconUrl: new URL("leaflet/dist/images/marker-icon.png", import.meta.url).href,
-  shadowUrl: new URL("leaflet/dist/images/marker-shadow.png", import.meta.url).href,
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowSize: [41, 41],
+const DefaultIcon = L.divIcon({
+  className: "map-pin",
+  html: '<div class="map-pin-inner"><span class="map-pin-cross">✟</span></div>',
+  iconSize: [30, 40],
+  iconAnchor: [15, 40],
+  popupAnchor: [0, -40],
 });
 
-const SelectedIcon = L.icon({
-  iconUrl: new URL("leaflet/dist/images/marker-icon.png", import.meta.url).href,
-  shadowUrl: new URL("leaflet/dist/images/marker-shadow.png", import.meta.url).href,
-  iconSize: [30, 49],
-  iconAnchor: [15, 49],
-  popupAnchor: [1, -40],
-  shadowSize: [49, 49],
-  className: "selected-marker",
+const SelectedIcon = L.divIcon({
+  className: "map-pin map-pin-selected",
+  html: '<div class="map-pin-inner"><span class="map-pin-cross">✟</span></div>',
+  iconSize: [36, 48],
+  iconAnchor: [18, 48],
+  popupAnchor: [0, -48],
 });
 
 (L as any).Marker.prototype.options.icon = DefaultIcon;
@@ -93,8 +90,12 @@ export default function BranchMap({ branches, selectedId }: Props) {
       style={{ height: "420px", width: "100%", borderRadius: "var(--radius-xl)", marginBottom: "1rem" }}
     >
       <TileLayer
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        attribution='&copy; OpenStreetMap contributors'
+        url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+        attribution='&copy; Esri &mdash; Esri, DeLorme, NAVTEQ'
+      />
+      <TileLayer
+        url="https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}"
+        attribution=""
       />
       <MapController
         branches={branches}

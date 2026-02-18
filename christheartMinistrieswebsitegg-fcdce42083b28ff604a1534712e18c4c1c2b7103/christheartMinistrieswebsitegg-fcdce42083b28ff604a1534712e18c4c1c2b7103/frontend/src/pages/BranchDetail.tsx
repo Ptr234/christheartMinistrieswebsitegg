@@ -3,6 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import { MapPin, Phone, Mail, Clock, ArrowLeft, Quote, Church, Users } from "lucide-react";
 import { branches } from "../data/branches";
 import { useScrollAnimation } from "../hooks/useScrollAnimation";
+import OptimizedImage from "../components/OptimizedImage";
 
 import { IMAGES } from "../utils/imageFallbacks";
 
@@ -62,7 +63,7 @@ export default function BranchDetail() {
           <div className="branch-gallery" style={{ marginBottom: "2.5rem" }}>
             {branchImages.map((img, i) => (
               <div key={i} className="branch-gallery-item">
-                <img src={img} alt={`${branch.name} - Photo ${i + 1}`} loading="lazy" />
+                <OptimizedImage src={img} alt={`${branch.name} - Photo ${i + 1}`} loading={i === 0 ? "eager" : "lazy"} aspectRatio="16/9" />
               </div>
             ))}
           </div>

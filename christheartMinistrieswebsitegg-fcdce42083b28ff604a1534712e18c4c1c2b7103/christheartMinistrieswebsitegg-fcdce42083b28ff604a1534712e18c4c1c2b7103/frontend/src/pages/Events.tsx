@@ -51,7 +51,8 @@ export default function Events() {
                   <img
                     src={event.image}
                     alt={`${event.name} event`}
-                    loading="lazy"
+                    loading={i === 0 ? "eager" : "lazy"}
+                    decoding="async"
                   />
                   <div className="event-card-lg-image-overlay" />
                   <div style={{

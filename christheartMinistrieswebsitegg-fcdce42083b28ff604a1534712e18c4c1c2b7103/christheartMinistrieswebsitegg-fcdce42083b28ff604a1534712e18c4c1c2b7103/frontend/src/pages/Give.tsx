@@ -139,7 +139,7 @@ export default function Give() {
           <div className="give-impact-grid animate-on-scroll" ref={impactRef}>
             {impactItems.map((item) => (
               <div key={item.title} className="give-impact-card">
-                <img src={item.img} alt={item.title} loading="lazy" />
+                <img src={item.img} alt={item.title} loading="lazy" decoding="async" />
                 <h4>{item.title}</h4>
                 <p>{item.desc}</p>
               </div>

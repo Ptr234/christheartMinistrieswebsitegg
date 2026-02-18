@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import {
   MapPin, Users, BookOpen, Clock, Headphones,
@@ -15,6 +16,7 @@ import TestimonialCarousel from "../components/TestimonialCarousel";
 import TypingText from "../components/TypingText";
 import SectionNav from "../components/SectionNav";
 import Card3D from "../components/Card3D";
+import OptimizedImage from "../components/OptimizedImage";
 
 function AnimatedSection({ children, className = "" }: {
   children: React.ReactNode; className?: string;
@@ -53,6 +55,16 @@ export default function Home() {
   const locations = useCountUp(20, 1800);
   const year = useCountUp(2007, 2500);
   const lives = useCountUp(1000, 2200);
+
+  // Preload hero background for fast LCP
+  useEffect(() => {
+    const link = document.createElement("link");
+    link.rel = "preload";
+    link.as = "image";
+    link.href = `${import.meta.env.BASE_URL}images/hero-bg.jpg`;
+    document.head.appendChild(link);
+    return () => { document.head.removeChild(link); };
+  }, []);
 
   return (
     <>
@@ -163,10 +175,11 @@ export default function Home() {
         <div className="container">
           <div className="mission-grid animate-on-scroll" ref={missionRef}>
             <div className="mission-image image-reveal">
-              <img
+              <OptimizedImage
                 src={IMAGES.mission}
                 alt="Apostle Isaiah & Rev. Deborah Mbuga"
-                loading="lazy"
+                loading="eager"
+                aspectRatio="4/3"
               />
             </div>
             <div className="mission-text">
@@ -286,11 +299,11 @@ export default function Home() {
             {getUpcomingEvents(events).slice(0, 6).map((event) => (
               <Card3D key={event.id} className="event-card">
                 <div className="event-card-image image-reveal">
-                  <img
+                  <OptimizedImage
                     src={event.image}
                     alt={`${event.name} event`}
                     loading="lazy"
-                    style={{ width: "100%", height: "auto", display: "block" }}
+                    aspectRatio="16/9"
                   />
                   <div className="event-card-image-overlay" />
                   <div className="event-date-badge">{event.date}</div>

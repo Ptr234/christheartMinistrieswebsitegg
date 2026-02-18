@@ -1,6 +1,7 @@
 import { Heart, BookOpen, Globe, Users, Flame } from "lucide-react";
 import { statementOfFaith } from "../data/faith";
 import { useScrollAnimation } from "../hooks/useScrollAnimation";
+import OptimizedImage from "../components/OptimizedImage";
 
 import { IMAGES } from "../utils/imageFallbacks";
 
@@ -58,10 +59,11 @@ export default function About() {
           <div className="animate-on-scroll" ref={historyRef}>
             <div className="feature-row">
               <div className="feature-row-image image-reveal">
-                <img
+                <OptimizedImage
                   src={IMAGES.history}
                   alt="Church community gathered in worship"
-                  loading="lazy"
+                  loading="eager"
+                  aspectRatio="4/3"
                 />
               </div>
               <div className="feature-row-text">
@@ -115,7 +117,7 @@ export default function About() {
           <div className="photo-gallery animate-on-scroll" ref={galleryRef}>
             {galleryImages.map((img, i) => (
               <div key={i} className="photo-gallery-item">
-                <img src={img.src} alt={img.alt} loading="lazy" />
+                <OptimizedImage src={img.src} alt={img.alt} loading="lazy" aspectRatio="4/3" />
               </div>
             ))}
           </div>
@@ -128,10 +130,11 @@ export default function About() {
           <div className="animate-on-scroll" ref={leadershipRef}>
             <div className="feature-row reverse">
               <div className="feature-row-image image-reveal">
-                <img
+                <OptimizedImage
                   src={IMAGES.leadership}
                   alt="Apostle Isaiah & Rev. Deborah Mbuga"
                   loading="lazy"
+                  aspectRatio="4/3"
                 />
               </div>
               <div className="feature-row-text">

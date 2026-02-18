@@ -26,7 +26,7 @@ export default function EventDetail() {
 
   useEffect(() => {
     if (!event) return;
-    const manifestUrl = `/events/${event.id}/manifest.json`;
+    const manifestUrl = `${import.meta.env.BASE_URL}events/${event.id}/manifest.json`;
     fetch(manifestUrl)
       .then((r) => {
         if (!r.ok) throw new Error("no manifest");
@@ -34,7 +34,7 @@ export default function EventDetail() {
       })
       .then((files: string[]) => {
         if (files && files.length) {
-          const urls = files.map((f) => `/events/${event.id}/${f}`);
+          const urls = files.map((f) => `${import.meta.env.BASE_URL}events/${event.id}/${f}`);
           setEventImages(urls);
         }
       })
@@ -118,7 +118,8 @@ export default function EventDetail() {
                 src={eventImages.length > 0 ? eventImages[0] : event.image}
                 alt={event.name}
                 style={{ width: "100%", height: "auto", display: "block" }}
-                loading="lazy"
+                loading="eager"
+                decoding="async"
               />
             </div>
 
