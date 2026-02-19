@@ -1,7 +1,6 @@
 import { useState, useMemo } from "react";
 import { Video, Search, Play, Mic, X, ExternalLink, ChevronDown } from "lucide-react";
 import { useYouTubeVideos } from "../hooks/useYouTubeVideos";
-import { useScrollAnimation } from "../hooks/useScrollAnimation";
 
 const PAGE_SIZE = 10;
 
@@ -10,8 +9,6 @@ export default function Sermons() {
   const [search, setSearch] = useState("");
   const [playingId, setPlayingId] = useState<string | null>(null);
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
-  const listRef = useScrollAnimation<HTMLDivElement>();
-
   const filtered = useMemo(() =>
     sermons.filter((s) =>
       !search ||
@@ -171,7 +168,7 @@ export default function Sermons() {
 
           {/* Sermon List */}
           {!loading && !error && (
-            <div className="sermons-list animate-on-scroll" ref={listRef}>
+            <div className="sermons-list">
               {filtered.length === 0 ? (
                 <div style={{ textAlign: "center", padding: "3rem", color: "var(--text-light)" }}>
                   <Search size={48} style={{ marginBottom: "1rem", opacity: 0.3 }} />
