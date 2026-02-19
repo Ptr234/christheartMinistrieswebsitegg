@@ -2,13 +2,12 @@ import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import {
   MapPin, Users, BookOpen, Clock, Headphones,
-  Church, Globe, Star, ArrowRight, Flame, Heart, Mic, HandHeart
+  Church, Globe, Star, ArrowRight, Flame
 } from "lucide-react";
 import { events } from "../data/events";
-import { getUpcomingEvents, getCountdownText } from "../utils/eventDate";
-import { IMAGES } from "../utils/imageFallbacks";
+import { getUpcomingEvents } from "../utils/eventDate";
+import { IMAGES, ALL_IMAGES } from "../utils/imageFallbacks";
 import { useScrollAnimation } from "../hooks/useScrollAnimation";
-import { useCountUp } from "../hooks/useCountUp";
 import { useCursorGlow } from "../hooks/useCursorGlow";
 import ParticleField from "../components/ParticleField";
 import CountdownTimer from "../components/CountdownTimer";
@@ -29,32 +28,65 @@ function AnimatedSection({ children, className = "" }: {
   );
 }
 
-// removed - events now use event.image directly
-
 const sections = [
   { id: "hero", label: "Hero" },
-  { id: "stats", label: "Stats" },
   { id: "mission", label: "Our Story" },
   { id: "services", label: "Services" },
-  { id: "impact", label: "Impact" },
   { id: "events", label: "Events" },
   { id: "testimonials", label: "Testimonials" },
   { id: "cta", label: "Join Us" },
 ];
 
+const SERVICES_DATA = [
+  {
+    icon: Church,
+    title: "Sunday Services",
+    id: "sunday-services",
+    desc: "7am, 9am (Teen's Service), 11am and 4pm. Please check for variations with your local branch.",
+    bgImg: ALL_IMAGES[0],
+  },
+  {
+    icon: BookOpen,
+    title: "Discipleship Class",
+    id: "discipleship-class",
+    desc: "Deep dive into God's word with interactive discipleship sessions and home cell fellowships.",
+    bgImg: ALL_IMAGES[2],
+  },
+  {
+    icon: Star,
+    title: "Overnight Prayers",
+    id: "overnight-prayers",
+    desc: "Powerful overnight prayer sessions for breakthrough and divine encounters.",
+    bgImg: ALL_IMAGES[4],
+  },
+  {
+    icon: Headphones,
+    title: "Lunch Hour Services",
+    id: "lunch-hour-services",
+    desc: "Mid-day refreshing. Kampala branch: 12:45pm – 1:45pm.",
+    bgImg: ALL_IMAGES[6],
+  },
+  {
+    icon: Users,
+    title: "Home Cells",
+    id: "home-cells",
+    desc: "Small group fellowships in homes for deeper connection and spiritual growth.",
+    bgImg: ALL_IMAGES[3],
+  },
+  {
+    icon: Flame,
+    title: "Night Services",
+    id: "night-services",
+    desc: "Special evening worship gatherings for spiritual empowerment.",
+    bgImg: ALL_IMAGES[5],
+  },
+];
+
 export default function Home() {
-  const statsRef = useScrollAnimation<HTMLDivElement>();
   const missionRef = useScrollAnimation<HTMLDivElement>();
   const servicesRef = useScrollAnimation<HTMLDivElement>();
-  const eventsRef = useScrollAnimation<HTMLDivElement>();
   const ctaRef = useScrollAnimation<HTMLDivElement>();
-  const impactRef = useScrollAnimation<HTMLDivElement>();
   const cursorGlowRef = useCursorGlow();
-
-  const branches = useCountUp(80, 2000);
-  const locations = useCountUp(20, 1800);
-  const year = useCountUp(2007, 2500);
-  const lives = useCountUp(1000, 2200);
 
   // Preload hero background for fast LCP
   useEffect(() => {
@@ -65,6 +97,8 @@ export default function Home() {
     document.head.appendChild(link);
     return () => { document.head.removeChild(link); };
   }, []);
+
+  const upcomingEvents = getUpcomingEvents(events);
 
   return (
     <>
@@ -126,7 +160,7 @@ export default function Home() {
                 <div className="service-icon"><Clock size={18} /></div>
                 <div>
                   <h4>Lunch Hour Services</h4>
-                  <p>Check with your local branch</p>
+                  <p>Kampala: 12:45pm – 1:45pm</p>
                 </div>
               </div>
               <div className="service-item">
@@ -139,33 +173,11 @@ export default function Home() {
               <div className="service-item">
                 <div className="service-icon"><BookOpen size={18} /></div>
                 <div>
-                  <h4>Bible Study & Home Cells</h4>
+                  <h4>Discipleship Class & Home Cells</h4>
                   <p>Mid-week fellowship groups</p>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Stats with Animated Counters */}
-      <section className="stats-bar" id="stats">
-        <div className="stats-inner animate-on-scroll" ref={statsRef}>
-          <div className="stat-card" ref={branches.ref}>
-            <div className="stat-number">{branches.count}+</div>
-            <div className="stat-label">Branches Worldwide</div>
-          </div>
-          <div className="stat-card" ref={locations.ref}>
-            <div className="stat-number">{locations.count}+</div>
-            <div className="stat-label">Uganda Locations</div>
-          </div>
-          <div className="stat-card" ref={year.ref}>
-            <div className="stat-number">{year.count}</div>
-            <div className="stat-label">Year Founded</div>
-          </div>
-          <div className="stat-card" ref={lives.ref}>
-            <div className="stat-number">{lives.count}s</div>
-            <div className="stat-label">Lives Transformed</div>
           </div>
         </div>
       </section>
@@ -187,7 +199,7 @@ export default function Home() {
               <h2>We Are Raising An Apostolic Generation</h2>
               <p>
                 What began as a humble gathering has transformed into a vibrant ministry. The ministry's
-                impact is felt through a spectrum of services, dynamic Bible studies, engaging fellowships,
+                impact is felt through a spectrum of services, discipleship, engaging fellowships,
                 and impactful outreach programs.
               </p>
               <p>
@@ -214,27 +226,26 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Services with 3D Cards */}
+      {/* Services with 3D Cards + Background Images */}
       <section className="services-section section" id="services">
         <div className="container">
           <AnimatedSection>
             <div className="section-header">
-              <span className="section-label">What We Offer</span>
-              <h2>Services & Meetings</h2>
+              <h2>Services & Gatherings</h2>
               <p>Join us for transformative worship experiences throughout the week</p>
             </div>
           </AnimatedSection>
           <div className="services-grid animate-on-scroll" ref={servicesRef}>
-            {[
-              { icon: Church, title: "Sunday Services", id: "sunday-services", desc: "7am, 9am (Teen's Service), 11am and 4pm. Please check for variations with your local branch." },
-              { icon: BookOpen, title: "Bible Study", id: "bible-study", desc: "Deep dive into God's word with interactive Bible study sessions and home cell fellowships." },
-              { icon: Star, title: "Overnight Prayers", id: "overnight-prayers", desc: "Powerful overnight prayer sessions for breakthrough and divine encounters." },
-              { icon: Headphones, title: "Lunch Hour Services", id: "lunch-hour-services", desc: "Mid-day refreshing for working professionals and students." },
-              { icon: Users, title: "Home Cells", id: "home-cells", desc: "Small group fellowships in homes for deeper connection and spiritual growth." },
-              { icon: Flame, title: "Night Services", id: "night-services", desc: "Special evening worship gatherings for spiritual empowerment." },
-            ].map((service) => (
-              <Link key={service.title} to={`/services/${service.id}`} style={{ textDecoration: "none", color: "inherit" }}>
-                <Card3D className="service-card-home">
+            {SERVICES_DATA.map((service) => (
+              <Link
+                key={service.title}
+                to={`/services/${service.id}`}
+                style={{ textDecoration: "none", color: "inherit" }}
+              >
+                <Card3D
+                  className="service-card-home"
+                  style={{ "--svc-bg-img": `url(${service.bgImg})` } as React.CSSProperties}
+                >
                   <div className="svc-icon"><service.icon size={28} /></div>
                   <h3>{service.title}</h3>
                   <p>{service.desc}</p>
@@ -252,81 +263,51 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Ministry Impact Section */}
-      <section className="impact-section section" id="impact">
-        <div className="container">
-          <AnimatedSection>
-            <div className="section-header">
-              <span className="section-label">Our Reach</span>
-              <h2>Ministry Impact</h2>
-              <p>Transforming lives and communities across Uganda and beyond</p>
-            </div>
-          </AnimatedSection>
-          <div className="impact-grid animate-on-scroll" ref={impactRef}>
-            <Card3D className="impact-card">
-              <div className="impact-card-icon"><Mic size={28} /></div>
-              <div className="impact-number">500+</div>
-              <div className="impact-label">Sermons Preached</div>
-              <div className="impact-bar"><div className="impact-bar-fill" style={{ width: "85%" }} /></div>
-            </Card3D>
-            <Card3D className="impact-card">
-              <div className="impact-card-icon"><HandHeart size={28} /></div>
-              <div className="impact-number">10,000+</div>
-              <div className="impact-label">Lives Touched</div>
-              <div className="impact-bar"><div className="impact-bar-fill" style={{ width: "92%" }} /></div>
-            </Card3D>
-            <Card3D className="impact-card">
-              <div className="impact-card-icon"><Heart size={28} /></div>
-              <div className="impact-number">50+</div>
-              <div className="impact-label">Community Outreaches</div>
-              <div className="impact-bar"><div className="impact-bar-fill" style={{ width: "70%" }} /></div>
-            </Card3D>
-          </div>
-        </div>
-      </section>
-
-      {/* Featured Events with Image Reveals */}
+      {/* Featured Events – Horizontal Marquee */}
       <section className="featured-events section" id="events">
         <div className="container">
           <AnimatedSection>
             <div className="section-header">
               <span className="section-label">Upcoming</span>
-              <h2>Featured Events</h2>
-              <p>Don't miss these powerful gatherings</p>
+              <h2>Events & Gatherings</h2>
+              <p>Don't miss these powerful moments</p>
             </div>
           </AnimatedSection>
-          <div className="featured-events-grid animate-on-scroll" ref={eventsRef}>
-            {getUpcomingEvents(events).slice(0, 6).map((event) => (
-              <Card3D key={event.id} className="event-card">
-                <div className="event-card-image image-reveal">
-                  <OptimizedImage
-                    src={event.image}
-                    alt={`${event.name} event`}
-                    loading="lazy"
-                    aspectRatio="16/9"
-                  />
-                  <div className="event-card-image-overlay" />
-                  <div className="event-date-badge">{event.date}</div>
-                  {getCountdownText(event) && (
-                    <div className="event-countdown-badge">
-                      <Clock size={12} /> {getCountdownText(event)}
-                    </div>
-                  )}
-                </div>
-                <div className="event-card-body">
-                  <h3>{event.name}</h3>
-                  <div className="event-meta">
-                    <span><Clock size={14} /> {event.time}</span>
-                    <span><MapPin size={14} /> {event.location}</span>
+        </div>
+
+        {upcomingEvents.length > 0 ? (
+          <div className="events-marquee">
+            <div className="events-marquee-track">
+              {[...upcomingEvents, ...upcomingEvents].map((event, i) => (
+                <Link
+                  to={`/events/${event.id}`}
+                  key={`${event.id}-${i}`}
+                  className="event-marquee-card"
+                >
+                  <div className="event-marquee-img">
+                    <img src={event.image} alt={event.name} loading="lazy" />
+                    <div className="event-marquee-overlay" />
+                    <span className="event-marquee-date">{event.date}</span>
                   </div>
-                  <p>{event.description.slice(0, 120)}...</p>
-                  <Link to={`/events/${event.id}`} className="btn btn-primary">
-                    Learn More <ArrowRight size={16} />
-                  </Link>
-                </div>
-              </Card3D>
-            ))}
+                  <div className="event-marquee-body">
+                    <span className="event-marquee-cat">{event.category}</span>
+                    <h4>{event.name}</h4>
+                    <p>{event.tagline}</p>
+                  </div>
+                </Link>
+              ))}
+            </div>
           </div>
+        ) : (
+          <div className="container" style={{ textAlign: "center", padding: "3rem 0", color: "var(--text-light)" }}>
+            <p>Check back soon for upcoming events.</p>
+          </div>
+        )}
+
+        <div className="container" style={{ textAlign: "center", marginTop: "2rem" }}>
+          <Link to="/events" className="btn btn-primary">
+            View All Events <ArrowRight size={16} />
+          </Link>
         </div>
       </section>
 

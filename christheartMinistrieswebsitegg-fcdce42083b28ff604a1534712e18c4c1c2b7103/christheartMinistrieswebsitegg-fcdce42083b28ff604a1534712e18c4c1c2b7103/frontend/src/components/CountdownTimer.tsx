@@ -1,23 +1,56 @@
 import { useState, useEffect } from "react";
 import { Clock } from "lucide-react";
 
-function getNextSunday() {
+interface Service {
+  name: string;
+  days: number[]; // 0=Sun, 1=Mon...6=Sat
+  hour: number;
+  minute: number;
+}
+
+const SERVICES: Service[] = [
+  { name: "Sunday Service (7am)", days: [0], hour: 7, minute: 0 },
+  { name: "Sunday Service (9am)", days: [0], hour: 9, minute: 0 },
+  { name: "Sunday Service (11am)", days: [0], hour: 11, minute: 0 },
+  { name: "Sunday Service (4pm)", days: [0], hour: 16, minute: 0 },
+  { name: "Lunch Hour Service", days: [1, 2, 3, 4, 5], hour: 12, minute: 45 },
+];
+
+function getNextService(): { time: Date; name: string } {
   const now = new Date();
-  const day = now.getDay();
-  const diff = day === 0 ? 7 : 7 - day;
-  const next = new Date(now);
-  next.setDate(now.getDate() + (day === 0 && now.getHours() < 11 ? 0 : diff));
-  next.setHours(9, 0, 0, 0);
-  return next;
+  for (let dayOffset = 0; dayOffset < 8; dayOffset++) {
+    const date = new Date(now);
+    date.setDate(date.getDate() + dayOffset);
+    const dayOfWeek = date.getDay();
+    let earliest: { time: Date; name: string } | null = null;
+
+    for (const svc of SERVICES) {
+      if (svc.days.includes(dayOfWeek)) {
+        const t = new Date(date);
+        t.setHours(svc.hour, svc.minute, 0, 0);
+        if (t > now && (!earliest || t < earliest.time)) {
+          earliest = { time: t, name: svc.name };
+        }
+      }
+    }
+    if (earliest) return earliest;
+  }
+  // fallback
+  const fallback = new Date();
+  fallback.setDate(fallback.getDate() + 7);
+  fallback.setHours(9, 0, 0, 0);
+  return { time: fallback, name: "Sunday Service (9am)" };
 }
 
 export default function CountdownTimer() {
+  const [nextSvc, setNextSvc] = useState(() => getNextService());
   const [time, setTime] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
 
   useEffect(() => {
     const tick = () => {
-      const target = getNextSunday();
-      const diff = Math.max(0, target.getTime() - Date.now());
+      const current = getNextService();
+      setNextSvc(current);
+      const diff = Math.max(0, current.time.getTime() - Date.now());
       setTime({
         days: Math.floor(diff / 86400000),
         hours: Math.floor((diff % 86400000) / 3600000),
@@ -33,8 +66,8 @@ export default function CountdownTimer() {
   return (
     <div className="countdown-timer">
       <div className="countdown-header">
-        <Clock size={18} />
-        <span>Next Service In</span>
+        <Clock size={16} />
+        <span>Next: <strong>{nextSvc.name}</strong></span>
       </div>
       <div className="countdown-units">
         {[
